@@ -91,6 +91,8 @@ set(LIBTRITON_HEADER_FILES
     includes/triton/basicBlock.hpp
     includes/triton/bitsVector.hpp
     includes/triton/bitwuzlaSolver.hpp
+    includes/triton/bitwuzlaCachingSolver.hpp
+    includes/triton/bitwuzlaBoolectorCompat.hpp
     includes/triton/callbacks.hpp
     includes/triton/callbacksEnums.hpp
     includes/triton/comparableFunctor.hpp
@@ -167,6 +169,7 @@ if(BITWUZLA_INTERFACE)
     set(BITWUZLA_INTERFACE_SOURCE_FILES
         ast/bitwuzla/tritonToBitwuzla.cpp
         engines/solver/bitwuzla/bitwuzlaSolver.cpp
+        engines/solver/bitwuzla/bitwuzlaCachingSolver.cpp
     )
 else()
     set(BITWUZLA_INTERFACE_SOURCE_FILES)

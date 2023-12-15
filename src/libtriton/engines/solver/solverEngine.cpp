@@ -31,7 +31,7 @@ namespace triton {
       }
 
 
-      const triton::engines::solver::SolverInterface* SolverEngine::getSolverInstance(void) const {
+      triton::engines::solver::SolverInterface* SolverEngine::getSolverInstance(void) const {
         if (!this->solver)
           throw triton::exceptions::SolverEngine("SolverEngine::getSolver(): Solver undefined.");
         return this->solver.get();
@@ -52,7 +52,7 @@ namespace triton {
           #ifdef TRITON_BITWUZLA_INTERFACE
           case triton::engines::solver::SOLVER_BITWUZLA:
             /* init the new instance */
-            this->solver.reset(new(std::nothrow) triton::engines::solver::BitwuzlaSolver());
+            this->solver.reset(new(std::nothrow) triton::engines::solver::BitwuzlaCachingSolver());
             if (this->solver == nullptr)
               throw triton::exceptions::SolverEngine("SolverEngine::setSolver(): Not enough memory.");
             break;

@@ -1073,7 +1073,7 @@ namespace triton {
   }
 
 
-  const triton::engines::solver::SolverInterface* Context::getSolverInstance(void) const {
+  triton::engines::solver::SolverInterface* Context::getSolverInstance(void) const {
     this->checkSolver();
     return this->solver->getSolverInstance();
   }
@@ -1124,7 +1124,7 @@ namespace triton {
     #endif
     #ifdef TRITON_BITWUZLA_INTERFACE
     if (this->getSolver() == triton::engines::solver::SOLVER_BITWUZLA) {
-      return reinterpret_cast<const triton::engines::solver::BitwuzlaSolver*>(this->getSolverInstance())->evaluate(node);
+      return reinterpret_cast<triton::engines::solver::BitwuzlaCachingSolver*>(this->getSolverInstance())->evaluate(node);
     }
     #endif
     throw triton::exceptions::Context("Context::evaluateAstViaZ3(): Solver instance must be a SOLVER_Z3 or SOLVER_BITWUZLA.");

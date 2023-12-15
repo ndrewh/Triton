@@ -13,10 +13,6 @@
 #include <unordered_map>
 #include <vector>
 
-extern "C" {
-#include <bitwuzla/c/bitwuzla.h>
-}
-
 #include <triton/ast.hpp>
 #include <triton/dllexport.hpp>
 #include <triton/solverEnums.hpp>
@@ -51,9 +47,9 @@ namespace triton {
       //! \class BitwuzlaSolver
       /*! \brief Solver engine using Bitwuzla. */
       class BitwuzlaSolver : public SolverInterface {
-        private:
+        public:
           //! Converts binary bitvector value from string to uint512.
-          triton::uint512 fromBvalueToUint512(const char* value) const;
+          static triton::uint512 fromBvalueToUint512(const char* value);
 
           /*! Struct used to provide information for Bitwuzla termination callback */
           struct SolverParams {
@@ -65,6 +61,7 @@ namespace triton {
             int64_t timeout;                                                                                /*!< Timeout (ms) for solver instance running. */
             size_t  memory_limit;                                                                           /*!< Memory limit for the whole symbolic process. */
             int64_t last_mem_check = -1;                                                                    /*!< Time when the last memory usage check was performed. */
+            int64_t check_count = 0;
           };
 
           //! The SMT solver timeout. By default, unlimited. This global timeout may be changed for a specific query (isSat/getModel/getModels) via argument `timeout`.
@@ -84,7 +81,7 @@ namespace triton {
            * **item1**: symbolic variable id<br>
            * **item2**: model
            */
-          TRITON_EXPORT std::unordered_map<triton::usize, SolverModel> getModel(const triton::ast::SharedAbstractNode& node, triton::engines::solver::status_e* status = nullptr, triton::uint32 timeout = 0, triton::uint32* solvingTime = nullptr) const;
+          TRITON_EXPORT std::unordered_map<triton::usize, SolverModel> getModel(const triton::ast::SharedAbstractNode& node, triton::engines::solver::status_e* status = nullptr, triton::uint32 timeout = 0, triton::uint32* solvingTime = nullptr);
 
           //! Computes and returns several models from a symbolic constraint. The `limit` is the number of models returned.
           /*! \brief vector of map of symbolic variable id -> model
@@ -93,10 +90,10 @@ namespace triton {
            * **item1**: symbolic variable id<br>
            * **item2**: model
            */
-          TRITON_EXPORT std::vector<std::unordered_map<triton::usize, SolverModel>> getModels(const triton::ast::SharedAbstractNode& node, triton::uint32 limit, triton::engines::solver::status_e* status = nullptr, triton::uint32 timeout = 0, triton::uint32* solvingTime = nullptr) const;
+          TRITON_EXPORT std::vector<std::unordered_map<triton::usize, SolverModel>> getModels(const triton::ast::SharedAbstractNode& node, triton::uint32 limit, triton::engines::solver::status_e* status = nullptr, triton::uint32 timeout = 0, triton::uint32* solvingTime = nullptr);
 
           //! Returns true if an expression is satisfiable.
-          TRITON_EXPORT bool isSat(const triton::ast::SharedAbstractNode& node, triton::engines::solver::status_e* status = nullptr, triton::uint32 timeout = 0, triton::uint32* solvingTime = nullptr) const;
+          TRITON_EXPORT bool isSat(const triton::ast::SharedAbstractNode& node, triton::engines::solver::status_e* status = nullptr, triton::uint32 timeout = 0, triton::uint32* solvingTime = nullptr);
 
           //! Evaluates a Triton's AST via Bitwuzla and returns a concrete value.
           TRITON_EXPORT triton::uint512 evaluate(const triton::ast::SharedAbstractNode& node) const;

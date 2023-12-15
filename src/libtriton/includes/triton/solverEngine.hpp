@@ -25,6 +25,7 @@
 #endif
 #ifdef TRITON_BITWUZLA_INTERFACE
   #include <triton/bitwuzlaSolver.hpp>
+  #include <triton/bitwuzlaCachingSolver.hpp>
 #endif
 
 
@@ -68,7 +69,7 @@ namespace triton {
           TRITON_EXPORT triton::engines::solver::solver_e getSolver(void) const;
 
           //! Returns the instance of the initialized solver
-          TRITON_EXPORT const triton::engines::solver::SolverInterface* getSolverInstance(void) const;
+          TRITON_EXPORT triton::engines::solver::SolverInterface* getSolverInstance(void) const;
 
           //! Initializes a predefined solver.
           TRITON_EXPORT void setSolver(triton::engines::solver::solver_e kind);
